@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { PublicLayout } from '@/layouts/PublicLayout'
-import { AdminLayout } from '@/layouts/AdminLayout'
+import { ProtectedAdminLayout } from '@/layouts/ProtectedAdminLayout'
 import { Home } from '@/pages/Home'
 import { Categories } from '@/pages/Categories'
 import { CategoryPage } from '@/pages/CategoryPage'
@@ -20,6 +20,8 @@ import { AdminProductForm } from '@/admin/pages/AdminProductForm'
 import { AdminCategories } from '@/admin/pages/AdminCategories'
 import { AdminCategoryForm } from '@/admin/pages/AdminCategoryForm'
 import { AdminSettings } from '@/admin/pages/AdminSettings'
+import { AdminLogin } from '@/admin/pages/AdminLogin'
+
 
 function App() {
   return (
@@ -40,7 +42,11 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Route>
 
-      <Route element={<AdminLayout />}>
+      
+
+      <Route path="/admin/login" element={<AdminLogin />} />
+
+      <Route element={<ProtectedAdminLayout />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/new" element={<AdminProductForm />} />

@@ -70,4 +70,6 @@ export const STORAGE_KEYS = {
   products: 'gearflux_products',
   categories: 'gearflux_categories',
   settings: 'gearflux_settings',
+  adminPassword: 'gearflux_admin_password',
+  adminSession: 'gearflux_admin_session',
 } as const

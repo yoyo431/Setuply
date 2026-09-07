@@ -1,11 +1,19 @@
 import { useState } from 'react'
+import { KeyRound, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { useSettings } from '@/context/SettingsContext'
 import type { SiteSettings } from '@/types'
+import { authService } from '@/services/authService'
 
 export function AdminSettings() {
   const { settings, update } = useSettings()
   const [form, setForm] = useState<SiteSettings>(settings)
   const [saved, setSaved] = useState(false)
+
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [passwordSaved, setPasswordSaved] = useState(false)
 
   const updateField = <K extends keyof SiteSettings>(key: K, value: SiteSettings[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }))
@@ -20,6 +28,29 @@ export function AdminSettings() {
     await update(form)
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
+  }
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setPasswordError('')
+    if (newPassword.length < 6) {
+      setPasswordError('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل.')
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordError('كلمة المرور الجديدة والتأكيد غير متطابقين.')
+      return
+    }
+    const success = authService.changePassword(currentPassword, newPassword)
+    if (!success) {
+      setPasswordError('كلمة المرور الحالية غير صحيحة.')
+      return
+    }
+    setCurrentPassword('')
+    setNewPassword('')
+    setConfirmPassword('')
+    setPasswordSaved(true)
+    setTimeout(() => setPasswordSaved(false), 2500)
   }
 
   return (
@@ -144,6 +175,72 @@ export function AdminSettings() {
           حفظ الإعدادات
         </button>
       </form>
+
+      <section className="mt-10 rounded-2xl border border-border-subtle bg-bg-panel p-5">
+        <h2 className="flex items-center gap-2 font-semibold text-text-primary mb-1">
+          <KeyRound size={16} />
+          كلمة مرور لوحة التحكم
+        </h2>
+        <p className="text-sm text-text-secondary mb-5">
+          {authService.hasCustomPassword()
+            ? 'غيّر كلمة المرور الخاصة بالدخول على لوحة التحكم.'
+            : 'حاليًا تستخدم كلمة المرور الافتراضية. ننصح بشدة بتغييرها لأمان أعلى.'}
+        </p>
+
+        {passwordSaved && (
+          <div className="mb-4 flex items-center gap-2 rounded-xl border border-electric/30 bg-electric/10 p-3 text-sm text-electric">
+            <CheckCircle2 size={16} />
+            تم تغيير كلمة المرور بنجاح.
+          </div>
+        )}
+        {passwordError && (
+          <div className="mb-4 flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
+            <AlertCircle size={16} />
+            {passwordError}
+          </div>
+        )}
+
+        <form onSubmit={handlePasswordSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="currentPassword" className="mb-1.5 block text-sm text-text-secondary">كلمة المرور الحالية</label>
+            <input
+              id="currentPassword"
+              type="password"
+              required
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-text-primary outline-none focus:border-primary-500"
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div>
+              <label htmlFor="newPassword" className="mb-1.5 block text-sm text-text-secondary">كلمة المرور الجديدة</label>
+              <input
+                id="newPassword"
+                type="password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-text-primary outline-none focus:border-primary-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="mb-1.5 block text-sm text-text-secondary">تأكيد كلمة المرور الجديدة</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-text-primary outline-none focus:border-primary-500"
+              />
+            </div>
+          </div>
+          <button type="submit" className="rounded-full bg-primary-600 px-7 py-3 text-sm font-medium text-white hover:bg-primary-500 transition-colors">
+            تغيير كلمة المرور
+          </button>
+        </form>
+      </section>
     </div>
   )
 }
