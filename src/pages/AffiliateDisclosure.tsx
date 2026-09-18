@@ -7,7 +7,7 @@ export function AffiliateDisclosure() {
 
   useSEO({
     title: 'إفشاء الأفيليت',
-    description: 'توضيح كيفية استخدام روابط التسويق بالعمولة (Affiliate Links) على GearFlux.',
+    description: 'توضيح كيفية استخدام روابط التسويق بالعمولة (Affiliate Links) على Setuply.',
     path: '/affiliate-disclosure',
   })
 

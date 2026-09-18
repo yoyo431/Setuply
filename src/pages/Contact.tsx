@@ -25,7 +25,7 @@ export function Contact() {
 
   useSEO({
     title: 'اتصل بنا',
-    description: 'تواصل مع فريق GearFlux لأي استفسار أو اقتراح.',
+    description: 'تواصل مع فريق Setuply لأي استفسار أو اقتراح.',
     path: '/contact',
   })
 

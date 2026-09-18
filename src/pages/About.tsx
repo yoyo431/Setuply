@@ -5,7 +5,7 @@ import { useSEO } from '@/utils/seo'
 export function About() {
   useSEO({
     title: 'من نحن',
-    description: 'تعرف على GearFlux، منصة اكتشاف إكسسوارات الكمبيوتر واللاب توب والجيمنج في مصر.',
+    description: 'تعرف على Setuply، منصة اكتشاف إكسسوارات الكمبيوتر واللاب توب والجيمنج في مصر.',
     path: '/about',
   })
 
@@ -16,7 +16,7 @@ export function About() {
         <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mt-4 mb-6">من نحن</h1>
         <div className="space-y-4 text-text-secondary leading-relaxed">
           <p>
-            GearFlux هي منصة مصرية تساعدك تكتشف أفضل إكسسوارات الكمبيوتر واللاب توب وإكسسوارات الجيمنج، من خلال تصنيفات
+            Setuply هي منصة مصرية تساعدك تكتشف أفضل إكسسوارات الكمبيوتر واللاب توب وإكسسوارات الجيمنج، من خلال تصنيفات
             واضحة، مقارنات مبنية على مواصفات حقيقية، وتوصيات مناسبة لاستخدامك وميزانيتك.
           </p>
           <p>
